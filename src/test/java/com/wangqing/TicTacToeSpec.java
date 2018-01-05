@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class TicTacToeSpec {
 
     private TicTacToe ticTacToe;
-    private int size ;
+    private int size;
 
     @Before
     public final void before() {
@@ -80,12 +80,15 @@ public class TicTacToeSpec {
      */
     @Test
     public void whenPalyAndWholeHorizontalLineThenWinner() {
-        this.ticTacToe.play(1, 1);
-        this.ticTacToe.play(1, 2);
-        this.ticTacToe.play(2, 1);
-        this.ticTacToe.play(2, 2);
-        String actual = this.ticTacToe.play(3, 1);
+
+        System.out.println("1: " + ('X' + 'X' + 'X'));
+        this.ticTacToe.play(1, 1); //x
+        this.ticTacToe.play(2, 1);//y
+        this.ticTacToe.play(1, 2);//x
+        this.ticTacToe.play(2, 2);// y
+        String actual = this.ticTacToe.play(1, 3); // x
         assertEquals("X is the winner", actual);
+
     }
 
     /**
@@ -96,13 +99,13 @@ public class TicTacToeSpec {
      */
     @Test
     public void whenPlayAndWholeVerticalLineThenWinner() {
-        System.out.println(('\0'*3));
-        this.ticTacToe.play(2, 1);// X
+        System.out.println(('0'+'0'+'0' ));
+        this.ticTacToe.play(1, 2);// X
         this.ticTacToe.play(1, 1); // O
-        this.ticTacToe.play(3, 1); // X
-        this.ticTacToe.play(1, 2);// O
+        this.ticTacToe.play(1, 3); // X
+        this.ticTacToe.play(2, 1);// O
         this.ticTacToe.play(2, 2); // X
-        String actual = this.ticTacToe.play(1, 3);
+        String actual = this.ticTacToe.play(3, 1);
         assertEquals("Y is the winner", actual);
 
 
