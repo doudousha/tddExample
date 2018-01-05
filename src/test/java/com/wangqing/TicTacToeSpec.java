@@ -83,9 +83,9 @@ public class TicTacToeSpec {
 
         System.out.println("1: " + ('X' + 'X' + 'X'));
         this.ticTacToe.play(1, 1); //x
-        this.ticTacToe.play(2, 1);//y
-        this.ticTacToe.play(1, 2);//x
-        this.ticTacToe.play(2, 2);// y
+        this.ticTacToe.play(2, 1); //y
+        this.ticTacToe.play(1, 2); //x
+        this.ticTacToe.play(2, 2); // y
         String actual = this.ticTacToe.play(1, 3); // x
         assertEquals("X is the winner", actual);
 
@@ -99,16 +99,78 @@ public class TicTacToeSpec {
      */
     @Test
     public void whenPlayAndWholeVerticalLineThenWinner() {
-        System.out.println(('0'+'0'+'0' ));
-        this.ticTacToe.play(1, 2);// X
+        this.ticTacToe.play(1, 2); // X
         this.ticTacToe.play(1, 1); // O
         this.ticTacToe.play(1, 3); // X
-        this.ticTacToe.play(2, 1);// O
+        this.ticTacToe.play(2, 1); // O
         this.ticTacToe.play(2, 2); // X
         String actual = this.ticTacToe.play(3, 1);
         assertEquals("Y is the winner", actual);
+    }
 
+    /**
+     * 0XX
+     * X0
+     * 0
+     * <p>
+     * 00X
+     * 0X
+     * X
+     * 检查对角线
+     */
+    @Test
+    public void whenPlayAndWholeDiagonalLineThenWinner() {
+        // Act 操控
+        this.ticTacToe.play(1, 2); // X
+        this.ticTacToe.play(1, 1); // 0
+        this.ticTacToe.play(1, 3); // X
+        this.ticTacToe.play(2, 2); // 0
+        this.ticTacToe.play(2, 1); // X
+        String actuall1 = this.ticTacToe.play(3, 3);
 
+        this.ticTacToe.reset();
+
+        this.ticTacToe.play(1, 3); // X
+        this.ticTacToe.play(1, 1); // 0
+        this.ticTacToe.play(2, 2); // X
+        this.ticTacToe.play(1, 2); // 0
+        String actuall2 = this.ticTacToe.play(3, 1);
+
+        assertEquals("Y is the winner", actuall1);
+        assertEquals("X is the winner", actuall2);
+    }
+
+    /**
+     * x0x
+     * x00
+     * 0xx
+     * <p>
+     * 棋盘是否填满
+     */
+    @Test
+    public void whenAllBoxesAreFilledThenDraw() {
+        this.ticTacToe.play(1, 1); // x
+        this.ticTacToe.play(1, 2); // y
+        this.ticTacToe.play(1, 3); // x
+        this.ticTacToe.play(2, 2); // y
+        this.ticTacToe.play(2, 1); // x
+        this.ticTacToe.play(2, 3); // y
+        this.ticTacToe.play(3, 2); // x
+        this.ticTacToe.play(3, 1); // y
+        String actual = this.ticTacToe.play(3, 3);//x
+        assertEquals("The result is draw", actual);
+
+    }
+
+    @Test
+    public void whenCharXAddXThenNumber() {
+
+        assertEquals(176, ('X' + 'X'));
+    }
+
+    @Test
+    public void whenChar0Add0ThenNumber() {
+        assertEquals(96, ('0' + '0'));
     }
 
     /* 英语翻译

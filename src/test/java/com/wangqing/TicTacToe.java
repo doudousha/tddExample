@@ -19,6 +19,9 @@ public class TicTacToe {
         if (isWin(y, x)) {
             return (this.lastPlayer == '0' ? "Y" : this.lastPlayer) + " is the winner";
         }
+        if(this.isDraw()){
+            return "The result is draw";
+        }
 
         return "No winner";
     }
@@ -27,14 +30,16 @@ public class TicTacToe {
 
         int playerTotal = this.lastPlayer * this.size;
         // 水平线
-        char horizontal, vertical;
-        horizontal = vertical = '\0';
+        char horizontal, vertical, diagonal1, diagonal2;
+        horizontal = vertical = diagonal1 = diagonal2 = '\0';
         for (int index = 0; index < this.size; index++) {
             horizontal += this.board[y - 1][index]; //  水平
             vertical += this.board[index][x - 1]; // 垂直
+            diagonal1 += this.board[index][index]; // 对角线1
+            diagonal2 += this.board[index][this.size - index - 1];  // 对角线2
         }
 
-        if (horizontal == playerTotal || vertical == playerTotal) {
+        if (horizontal == playerTotal || vertical == playerTotal || diagonal1 == playerTotal || diagonal2 == playerTotal) {
             return true;
         }
         return false;
@@ -52,6 +57,26 @@ public class TicTacToe {
             return '0';
         }
         return 'X';
+    }
+
+    // 判断棋盘是否填满
+    private boolean isDraw() {
+        for (int y = 0; y < this.size; y++) {
+            for (int x = 0; x < this.size; x++) {
+                if (this.board[y][x] == '\0') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void reset() {
+        for (int y = 0; y < this.size; y++) {
+            for (int x = 0; x < this.size; x++) {
+                this.board[y][x] = '\0';
+            }
+        }
     }
 
     private void print() {
