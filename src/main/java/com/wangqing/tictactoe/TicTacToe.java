@@ -1,4 +1,4 @@
-package com.wangqing;
+package com.wangqing.tictactoe;
 
 public class TicTacToe {
 

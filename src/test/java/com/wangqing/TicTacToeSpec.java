@@ -1,5 +1,6 @@
 package com.wangqing;
 
+import com.wangqing.tictactoe.TicTacToe;
 import org.junit.Before;
 import org.junit.Test;
 
