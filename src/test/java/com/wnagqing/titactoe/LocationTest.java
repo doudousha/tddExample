@@ -6,10 +6,31 @@ import com.wangqing.ship.Point;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+
+/*
+                     Y
+
+                    -6
+                    -5
+                    -4
+                    -3
+                    -2
+                    -1
+  X -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6  X
+                     1
+                     2
+                     3
+                     4
+                     5
+                     6
+
+                     Y
+ */
 
 public class LocationTest {
 
@@ -17,12 +38,14 @@ public class LocationTest {
     private int x = 12;
     private int y = 32;
     private Direction direction = Direction.NORTH;
-    private Point max;
     private List<Point> obstacles;
+    private Point max;
 
     @Before
     public void before() {
+        this.max = new Point(50, 50);
         this.location = new Location(new Point(this.x, this.y), this.direction);
+        this.obstacles = new ArrayList<>();
     }
 
     @Test
@@ -42,6 +65,7 @@ public class LocationTest {
 
     /**
      * y向北
+     * 假定direction=NORTH,当forward被调用后，那么y应该被减少
      */
     @Test
     public void givenDirectionNWhenForwardThenYDecreases() {
@@ -51,6 +75,7 @@ public class LocationTest {
 
     /**
      * y向南
+     * 假定directioin=SOUTH ,当forward被调用后，那么y应该被增加
      */
     @Test
     public void givenDirectionSWhenForwardThenYIncreases() {
@@ -59,7 +84,8 @@ public class LocationTest {
     }
 
     /**
-     * x向东
+     * x向东 前进
+     * 假定direction = EAST ，当forward被调用后，那么x应该被增加
      */
     @Test
     public void givenDirectionEWhenForwardThenXIncreases() {
@@ -68,7 +94,8 @@ public class LocationTest {
     }
 
     /**
-     * x向西
+     * x向西 前进
+     * 假定dirctioin=WEST,当forward被调用，那么x应该被减少
      */
     @Test
     public void givenDirectionWWhenForwardThenXDecreases() {
@@ -77,6 +104,7 @@ public class LocationTest {
     }
 
     // y向北 倒退
+    // 假定direction = NORTH,当backward被调用后，那么Y应该被增加
     @Test
     public void givenDirectionNWhenBackwardThenYIncreases() {
         this.location.backward(this.max, this.obstacles, Direction.NORTH);
@@ -84,6 +112,7 @@ public class LocationTest {
     }
 
     // y 向南 倒退
+    // 假定direction =SOUTH ,当backward被调用后,那么Y 应该被减少
     @Test
     public void givenDirectionSWhenBackwardThenYDecreases() {
         this.location.backward(this.max, this.obstacles, Direction.SOUTH);
@@ -91,6 +120,7 @@ public class LocationTest {
     }
 
     // x 向东 倒退
+    // 假定direction=EAST ,当backward被调用后，那么x 应该被减少
     @Test
     public void givenDirectionEWhenBackwardThenXDecreases() {
         this.location.backward(this.max, this.obstacles, Direction.EAST);
@@ -98,6 +128,7 @@ public class LocationTest {
     }
 
     // x 向西倒退
+    // 假定desction等于WEST,当backward被调用后 ，那么 x 应该被增加
     @Test
     public void givenDirectionWWhenBackwardThenXIncreases() {
         this.location.backward(this.max, this.obstacles, Direction.WEST);
@@ -105,46 +136,48 @@ public class LocationTest {
     }
 
     // 北向左移动=西
+    // 当turnRight被调用后，那么dirction等于期望的值
     @Test
-    public void whenTurnleftThenDirectionIsSet() {
+    public void whenTurnLeftThenDirectionIsSet() {
         this.location.turnLeft();
         assertEquals(Direction.WEST, this.location.getDirection());
     }
 
-    // 北向右移动=东
+    // 北向右移动 = 东
+    // 当turnRight被调用后，那么direction 等于期望的值
     @Test
     public void whenTurnRightThenDirectionIsSet() {
         this.location.turnRight();
         assertEquals(Direction.EAST, this.location.getDirection());
     }
 
-    // 一样的对象调用equals 返回true
+    // 假定有一样的对象，当调用equals后，返回的结果等于true
     @Test
     public void givenSameObjectWhenEqualsThenTrue() {
         assertTrue(location.equals(this.location));
     }
 
-    // 不一样的对象调用equals返回false
+    // 假定有不一样的对象，当调用equals后，返回的结果应该等于false
     @Test
     public void givenDifferentObjectWhenEqualsThenFalse() {
         assertFalse(location.equals("abc"));
     }
 
-    // 不同的y调用equals 返回false
+    // 假定有不同的y，当调用equals后，那么返回的结果应该等于false
     @Test
     public void givenDifferentYWhenEqualsThenFalse() {
         Location locationCopy = new Location(new Point(999, this.location.getY()), this.location.getDirection());
         assertFalse(locationCopy.equals(this.location));
     }
 
-    // 不同的drection 调用equals 返回false
+    // 假定有不同的drection ，当调用equals后，那么返回结果的等于false
     @Test
     public void givenDifferentDerectionWhenEqualsThenFalse() {
         Location locationCopy = new Location(new Point(this.location.getX(), this.location.getY()), Direction.EAST);
         assertFalse(locationCopy.equals(this.location));
     }
 
-    // 相同的xy 和direction 调用equals 返回true
+    // 假定有相同的xy 和direction， 当调用equals时，那么结果等于true
     @Test
     public void givenSameXYDirectionWhenEqualsThenTrue() {
         Location locationCopy = new Location(this.location.getPoint(), this.location.getDirection());
@@ -153,6 +186,7 @@ public class LocationTest {
 
 
     // 比较引用地址是否一致
+    // 当copy被调用后，那么返回结果是一个不同的对象
     @Test
     public void whenCopyThenDifferentObject() {
         Location copy = location.copy();
@@ -160,18 +194,69 @@ public class LocationTest {
     }
 
     // 比较equal
+    // 当copy被调用后，那么返回的结果是一个相同的对象
     @Test
     public void whenCopyThenEquals() {
         Location copy = location.copy();
         assertEquals(copy, this.location);
     }
 
-    // 当x等于max.x 返回的x等于1
+    // 在坐标点(x=50)向西前进后,坐标点x等于1
+    // 假定direction=EAST 且x=max.x ,当forward被调动后，那么返回的为1
+    @Test
     public void givenDirectionEAndXEqualsMaxXWhenForwardThen1() {
-        this.location.setDirection(Direction.WEST);
+        this.location.setDirection(Direction.EAST);
         this.location.getPoint().setX(this.max.getX());
         this.location.forward(this.max, this.obstacles);
         assertEquals(this.location.getX(), 1);
+    }
+
+    // 在坐标点(x=1) 向北前进1,坐标点x等于max.y
+    // 假定direction=WEST且y=1,当forward被调用后，那么返回的结果等于max.x
+    @Test
+    public void givenDirectioinWAndYEquals1WhenForwardThenMaxX() {
+        this.location.setDirection(Direction.WEST);
+        this.location.getPoint().setX(1);
+        this.location.forward(max, obstacles);
+        assertEquals(this.location.getX(), max.getX());
+    }
+
+    // 在坐标点(y=50)向南前进后，y轴等于1
+    // 假定drection=S 且y=max.y,当forward被调用后，那么返回的结果为1
+    @Test
+    public void givenDirectionSAndYEqualsMaxYWhenForwardThen1() {
+
+        this.location.setDirection(Direction.SOUTH);
+        this.location.getPoint().setY(this.max.getY());
+        this.location.forward(this.max, this.obstacles);
+        assertEquals(1, this.location.getY());
+    }
+
+    // 在坐标点(y=1) 向北前进后，坐标点Y 等max.y
+    // 假定direction =NORTH且y=1，当forward被调用后，那么返回的记过等于max.y
+    @Test
+    public void givenDirectionNAndYEquals1WhenForwardThenMaxY() {
+        this.location.setDirection(Direction.NORTH);
+        this.location.getPoint().setY(1);
+        this.location.forward(this.max, this.obstacles);
+    }
+
+    // 向东行驶，遇到障碍(冰山等)前进返回false
+    // 假定设置障碍，当forward被调用，那么返回结果等于false
+    @Test
+    public void givenObstracleWhenForwardThenReturnFalse() {
+        this.location.setDirection(Direction.EAST);
+        obstacles.add(new Point(this.x + 1, y));
+        assertFalse(this.location.forward(this.max, this.obstacles));
+    }
+
+    // 向东行驶,遇到障碍(冰山等)，后退返回false
+    // 假定设置障碍，当backward被调用，那么返回结果返回false
+    @Test
+    public void givenObstracleWhenBackwardThenReturnFalse() {
+        this.location.setDirection(Direction.EAST);
+        obstacles.add(new Point(this.x - 1, y));
+        assertFalse(location.backward(this.max, obstacles));
     }
 
 

@@ -14,4 +14,6 @@ public class PlanetTest {
     public void whenInstantiatedThenObstaclesAreSet() {
 
     }
+
+
 }
